@@ -1,0 +1,31 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Datepicker - Default functionality</title>
+  <link rel="stylesheet" href="{% static 'contenido-web/evento/css/jquery-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'contenido-web/evento/css/style.css' %}">
+  <script src="{% static 'contenido-web/evento/js/jquery-3.6.0.js' %}"></script>
+  <script src="{% static 'contenido-web/evento/js/jquery-ui.js' %}"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+  <style>
+    input {
+        background-color: black;
+    }
+  </style>
+</head>
+<body>
+ 
+<p>Date: <input type="text" id="datepicker" placeholder="Click para seleccionar una fecha"></p>
+ 
+<script> 
+
+</script>
+</body>
+</html>

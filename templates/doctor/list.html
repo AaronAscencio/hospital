@@ -1,0 +1,25 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+     <script src="{% static 'doctor/js/list.js' %}"></script> 
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th scope="col">Nro</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Ap. Paterno</th>
+        <th scope="col">Ap. Materno</th>
+        <th scope="col">Especialidad</th>
+        <th scope="col">Cedula</th>
+        <th scope="col">Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
