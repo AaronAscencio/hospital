@@ -14,6 +14,7 @@ $(function () {
         },
         columns: [
             {"data": "id"},
+            {"data": "curp"},
             {"data": "name"},
             {"data": "paternal_surname"},
             {"data": "maternal_surname"},

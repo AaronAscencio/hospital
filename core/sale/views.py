@@ -22,6 +22,8 @@ from django.template.loader import get_template
 from io import BytesIO
 from xhtml2pdf import pisa
 from django.db import connection
+from .forms import SaleByDoctorForm
+from core.clinical_history.models import ClinicalHistory
 
 
 # Create your views here.
@@ -38,8 +40,8 @@ class SaleCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateVi
 
     def get_context_data(self,**kwargs):
         context =  super().get_context_data(**kwargs)
-        context['title'] = 'Creacion de una Venta'
-        context['entity'] = 'Ventas'
+        context['title'] = 'Creacion de una Receta'
+        context['entity'] = 'Recetas'
         context['list_url'] = reverse_lazy('sale:sale_list')
         context['action'] = 'add'
         context['det'] = []
@@ -63,15 +65,28 @@ class SaleCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateVi
                     item['value'] = i.name
                     data.append(item)
             elif(action=='add'):
+                print(request.POST)
                 vents = json.loads(request.POST['vents'])
                 with transaction.atomic():
                     sale = Sale()
                     sale.date_joined = vents['date_joined']
                     sale.cli_id = vents['cli']
+                    sale.doctor_id = vents['doctor']
                     sale.subtotal = float(vents['subtotal'])
                     sale.iva = float(vents['iva'])
+                    sale.diagnostic = vents['diagnostic']
+                    sale.treatment = vents['treatment']
                     sale.total = float(vents['total'])
                     sale.save()
+                    clinical_history, created = ClinicalHistory.objects.get_or_create(
+                    doctor=Doctor.objects.get(id=sale.doctor_id),
+                    patient=Patient.objects.get(id=sale.cli_id),
+                    sale=sale
+                    )
+                    clinical_history.name_doctor = clinical_history.doctor.get_full_name()
+                    clinical_history.name_patient = clinical_history.patient.get_full_name()
+                    clinical_history.diagnostic = clinical_history.sale.diagnostic
+                    clinical_history.save()
                     for i in vents['products']:
                         det = DetSale()
                         det.sale_id = sale.id
@@ -131,10 +146,10 @@ class SaleListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, ListView
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Listado de Ventas'
+        context['title'] = 'Listado de Recetas'
         context['create_url'] = reverse_lazy('sale:sale_create')
         context['list_url'] = reverse_lazy('sale:sale_list')
-        context['entity'] = 'Ventas'
+        context['entity'] = 'Recetas'
         return context
 
 class SaleDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, DeleteView):
@@ -158,11 +173,10 @@ class SaleDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Delete
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Eliminación de una Venta'
+        context['title'] = 'Eliminación de una Receta'
         context['entity'] = 'Ventas'
         context['list_url'] = self.success_url
         return context
-
 
 class SaleUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
     permission_required = 'sale.change_sale'
@@ -187,7 +201,7 @@ class SaleUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateVi
 
     def get_context_data(self,**kwargs):
         context =  super().get_context_data(**kwargs)
-        context['title'] = 'Creacion de una Venta'
+        context['title'] = 'Modificacion de una Receta'
         context['entity'] = 'Ventas'
         context['list_url'] = reverse_lazy('sale:sale_list')
         context['action'] = 'edit'
@@ -217,6 +231,9 @@ class SaleUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateVi
                     sale = Sale.objects.get(id=self.get_object().id)
                     sale.date_joined = vents['date_joined']
                     sale.cli_id = vents['cli']
+                    sale.doctor_id = vents['doctor']
+                    sale.diagnostic = vents['diagnostic']
+                    sale.treatment = vents['treatment']
                     sale.subtotal = float(vents['subtotal'])
                     sale.iva = float(vents['iva'])
                     sale.total = float(vents['total'])
@@ -342,4 +359,37 @@ class TotalSaleListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Lis
         context['create_url'] = reverse_lazy('sale:sale_create')
         context['list_url'] = reverse_lazy('sale:sale_total')
         context['entity'] = 'Ventas'
+        return context
+
+class SaleByDoctorListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
+    model = Sale
+    template_name = 'sale/salebydoctor.html'
+    permission_required = 'sale.view_sale'
+    
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            id = request.POST['id']
+            if action == 'searchdata':
+                data = []
+                for sale in Sale.objects.filter(doctor__pk = id):
+                    data.append(sale.toJSON())
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Listado de Recetas por Doctor'
+        context['create_url'] = reverse_lazy('sale:sale_create')
+        context['list_url'] = reverse_lazy('sale:sale_list')
+        context['entity'] = 'Citas'
+        context['form'] = SaleByDoctorForm()
         return context

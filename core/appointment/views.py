@@ -9,7 +9,9 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View, FormView
 from .models import Appointment
-from .forms import AppointmentForm
+from .forms import AppointmentForm,AppointmentByDoctorForm,AppointmentByPatientForm
+from django.contrib import messages
+from datetime import datetime, timedelta
 
 class AppointmentListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
     model = Appointment
@@ -120,6 +122,10 @@ class AppointmentDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,D
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        current_date = datetime.now().date()
+        if self.object.date - current_date < timedelta(days=1):
+            messages.error(request,'No puedes cancelar/eliminar la cita en un periodo menor a las 24 horas de esta misma')
+            return HttpResponseRedirect(self.success_url)
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -135,4 +141,71 @@ class AppointmentDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,D
         context['title'] = 'Eliminación de una Cita'
         context['entity'] = 'Cita'
         context['list_url'] = self.success_url
+        return context
+
+class AppointmentByDoctorListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
+    model = Appointment
+    template_name = 'appointment/appointments.html'
+    permission_required = 'appointment.view_appointment'
+    
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            id = request.POST['id']
+            if action == 'searchdata':
+                data = []
+                for appointment in Appointment.objects.filter(doctor__pk = id):
+                    data.append(appointment.toJSON())
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Listado de Citas por Doctor'
+        context['create_url'] = reverse_lazy('appointment:appointment_create')
+        context['list_url'] = reverse_lazy('appointment:appointment_list')
+        context['entity'] = 'Citas'
+        context['form'] = AppointmentByDoctorForm()
+        return context
+
+class AppointmentByPatientListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
+    model = Appointment
+    template_name = 'appointment/appointments-by-patient.html'
+    permission_required = 'appointment.view_appointment'
+    
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            id = request.POST['id']
+            if action == 'searchdata':
+                data = []
+                for appointment in Appointment.objects.filter(patient__pk = id):
+                    print(appointment)
+                    data.append(appointment.toJSON())
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Listado de Citas por Paciente'
+        context['create_url'] = reverse_lazy('appointment:appointment_create')
+        context['list_url'] = reverse_lazy('appointment:appointment_list')
+        context['entity'] = 'Citas'
+        context['form'] = AppointmentByPatientForm()
         return context

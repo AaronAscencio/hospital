@@ -28,6 +28,9 @@ urlpatterns = [
     path('appointment/',include('core.appointment.urls')),
     path('product/',include('core.product.urls')),
     path('sale/',include('core.sale.urls')),
+    path('office/',include('core.office.urls')),
+    path('clinical-history/',include('core.clinical_history.urls')),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

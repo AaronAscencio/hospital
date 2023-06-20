@@ -41,10 +41,12 @@
     {{ comp.address|upper }}
 </p>
 <p>
-    <b>FACTURA:</b> {{ sale.id }}<br>
+    <b>RECETA:</b> {{ sale.id }}<br>
+    <b>DOCTOR:</b> {{ sale.doctor.get_full_name|upper }}<br>
     <b>FECHA DE VENTA:</b> {{ sale.date_joined }}<br>
-    <b>CLIENTE:</b> {{ sale.cli.get_full_name|upper }}<br>
-    <b>DNI:</b> {{ sale.cli.id }}<br>
+    <b>PACIENTE:</b> {{ sale.cli.get_full_name|upper }}<br>
+    <b>DIAGNOSTICO:</b> {{ sale.diagnostic|upper }}<br>
+    <b>CURP:</b> {{ sale.cli.curp }}<br>
 </p>
 <table id="invoice">
     <thead>
@@ -52,7 +54,7 @@
         <th style="width: 10%;">CANT</th>
         <th style="width: 15%;">P.UNITARIO</th>
         <th style="width: 20%;">CATEGORIA</th>
-        <th style="width: 40%;">PRODUCTO</th>
+        <th style="width: 40%;">CONCEPTO</th>
         <th style="width: 15%;">TOTAL</th>
     </tr>
     </thead>
@@ -86,9 +88,14 @@
         <th>****GRACIAS POR SU COMPRA****</th>
     </tr>
     <tr>
-        <th>NOSE ACEPTAN CAMBIOS NI DEVOLUCIONES</th>
+        <th>NO SE ACEPTAN CAMBIOS NI DEVOLUCIONES</th>
     </tr>
     </thead>
+    <br>
+<div>
+    <label> <b>TRATAMIENTO:</b></label>
+    <p> {{ sale.treatment|upper }} </p>
+</div>
 </table>
 </body>
 </html>

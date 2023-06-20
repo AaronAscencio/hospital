@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View, FormView
 from .models import Doctor
 from .forms import DoctorForm
+from core.appointment.models import *
+from django.contrib import messages
 
 class DoctorListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
     model = Doctor
@@ -121,6 +123,11 @@ class DoctorDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Delete
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        current_date = date.today()
+        doctor_appointments = Appointment.objects.filter(doctor_id=self.object.pk,date__gte= current_date)
+        if doctor_appointments.exists():
+            messages.error(request,'No puedes eliminar a este doctor, ya que cuenta con consultas asignadas')
+            return HttpResponseRedirect(self.success_url)
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -137,3 +144,4 @@ class DoctorDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Delete
         context['entity'] = 'Doctores'
         context['list_url'] = self.success_url
         return context
+

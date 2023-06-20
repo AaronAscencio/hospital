@@ -4,10 +4,14 @@ from django.conf import settings
 from datetime import datetime
 from core.patient.models import Patient
 from core.product.models import Product
+from core.doctor.models import Doctor
 
 # Create your models here.
 class Sale(models.Model):
     cli = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    diagnostic = models.CharField(max_length=50, blank=False, null=False)
+    treatment = models.CharField(max_length=350, blank=False, null=False)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date_joined = models.DateField(default=datetime.now)
     subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
@@ -21,6 +25,8 @@ class Sale(models.Model):
         item = model_to_dict(self)
         item['cli'] = self.cli.get_full_name()
         item['cli_id'] = self.cli.id
+        item['doctor'] = self.doctor.get_full_name()
+        item['specialty'] = self.doctor.specialty.name
         item['subtotal'] = format(self.subtotal, '.2f')
         item['iva'] = format(self.iva, '.2f')
         item['total'] = format(self.total, '.2f')
@@ -28,7 +34,7 @@ class Sale(models.Model):
         return item
 
     def __str__(self):
-        return self.cli.get_full_name()
+        return f'{self.pk} - {self.cli.get_full_name()} - ${self.total}'
 
     class Meta:
         verbose_name = 'Venta'

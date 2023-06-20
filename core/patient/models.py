@@ -10,6 +10,19 @@ GENDER_OPTIONS = [
     ]
 
 class Patient(models.Model):
+    curp = models.CharField(
+        verbose_name='CURP',
+        max_length=18,
+        blank=False,
+        null=False,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^[A-Z]{4}\d{6}[H,M][A-Z]{5}[A-Z0-9]\d$',
+                message='El CURP no es válido'
+            )
+        ]
+    )
     name = models.CharField(verbose_name='Nombre', max_length=150, blank=False,null=False)
     paternal_surname = models.CharField(verbose_name='Apellido Paterno', max_length=150, blank=False,null=False)
     maternal_surname = models.CharField(verbose_name='Apellido Materno', max_length=150, blank=False,null=False)

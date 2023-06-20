@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'core.appointment.apps.AppointmentConfig',
     'core.product.apps.ProductConfig',
     'core.sale.apps.SaleConfig',
+    'core.office.apps.OfficeConfig',
+    'core.clinical_history.apps.ClinicalHistoryConfig',
+    
     #Third Apps
     'widget_tweaks',
 ]

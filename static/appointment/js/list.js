@@ -14,6 +14,7 @@ $(function () {
         },
         columns: [
             {"data": "id"},
+            {"data": "office.number"},
             {"data": "patient"},
             {"data": "doctor"},
             {"data": "nurse"},

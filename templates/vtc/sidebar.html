@@ -5,7 +5,7 @@
              alt="AdminLTE Logo"
              class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">Portales</span>
+        <span class="brand-text font-weight-light">Hospital DBST</span>
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -37,11 +37,29 @@
                             </p>
                         </a>
                     </li> 
+
+                    <li class="nav-item">
+                        <a href="{% url 'office:office_list' %}" class="nav-link">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            <p>
+                                CONSULTORIOS
+                            </p>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="{% url 'doctor:doctor_list' %}" class="nav-link">
                             <i class="fa fa-user-md" aria-hidden="true"></i>
                             <p>
                                 DOCTORES
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'appointment:appointment_by_doctor_list' %}" class="nav-link">
+                            <i class="fa fa-user-md" aria-hidden="true"></i>
+                            <p>
+                                CITAS POR DOCTOR
                             </p>
                         </a>
                     </li>
@@ -64,6 +82,14 @@
                         </p>
                     </a>
                 </li> 
+                <li class="nav-item">
+                    <a href="{% url 'clinical_history:clinical_history_list' %}" class="nav-link"> 
+                        <i class="fa fa-th" aria-hidden="true"></i>
+                        <p>
+                            HISTORIAL CLINICO
+                        </p>
+                    </a>
+                </li> 
 
                 <li class="nav-item">
                     <a href="{% url 'appointment:appointment_list' %}" class="nav-link"> 
@@ -73,12 +99,27 @@
                         </p>
                     </a>
                 </li> 
-
+                <li class="nav-item">
+                    <a href="{% url 'appointment:appointment_by_patient_list' %}" class="nav-link"> 
+                        <i class="fa fa-history" aria-hidden="true"></i>
+                        <p>
+                            HISTORIAL DE CITAS POR PACIENTE
+                        </p>
+                    </a>
+                </li> 
                 <li class="nav-item">
                     <a href="{% url 'sale:sale_list' %}" class="nav-link"> 
-                        <i class="fa fa-shopping-cart " aria-hidden="true"></i>
+                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
                         <p>
-                            VENTAS
+                            RECETAS
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'sale:sales_by_doctor' %}" class="nav-link"> 
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                        <p>
+                            RECETAS POR MEDICO
                         </p>
                     </a>
                 </li>

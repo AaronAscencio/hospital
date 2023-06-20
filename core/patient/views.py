@@ -11,6 +11,9 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, V
 from .models import Patient
 from .forms import PatientForm
 from django.db import connection
+from django.contrib import messages
+from datetime import date
+from core.appointment.models import Appointment
 
 class PatientListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
     model = Patient
@@ -132,6 +135,11 @@ class PatientDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Delet
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
+        current_date = date.today()
+        doctor_appointments = Appointment.objects.filter(patient_id=self.object.pk,date__gte= current_date)
+        if doctor_appointments.exists():
+            messages.error(request,'No puedes eliminar a este paciente, ya que cuenta con consultas asignadas')
+            return HttpResponseRedirect(self.success_url)
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):

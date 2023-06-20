@@ -49,7 +49,7 @@ $(function () {
                 class: 'text-center',
                 orderable: false,
                 render: function (data, type, row) {
-                    return  parseFloat(data).toFixed(2) + '%';
+                    return  `$${parseFloat(data).toFixed(2)}`;
                 }
             }
         ],

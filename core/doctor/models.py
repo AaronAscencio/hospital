@@ -40,7 +40,7 @@ class Doctor(models.Model):
     city = models.CharField(verbose_name='Municipio', max_length=100, blank=False,null=False)
     state = models.CharField(verbose_name='Estado', max_length=100, blank=False,null=False)
     telephone = models.CharField(verbose_name='Telefono', max_length=13, blank=False,null=False,unique=True)
-
+    
 
     def get_full_name(self):
         return f'{self.name} {self.paternal_surname} {self.maternal_surname}'

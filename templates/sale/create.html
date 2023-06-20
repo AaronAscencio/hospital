@@ -37,12 +37,12 @@
                     <div class="col-lg-8">
                         <div class="card card-secondary">
                             <div class="card-header">
-                                <h3 class="card-title"><i class="fas fa-boxes"></i> Detalle de productos</h3>
+                                <h3 class="card-title"><i class="fas fa-boxes"></i> Detalle de productos o servicios</h3>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
                                 
-                                    <label>Buscador de productos:</label>
+                                    <label>Buscador de productos/servicios:</label>
                                     <div class="input-group">
                                         <input id="search" type="text" class="form-control" name="search"
                                             placeholder="Ingrese una descripción de producto" autocomplete="off">
@@ -89,8 +89,20 @@
                                     {{ form.date_joined }}
                                 </div>
                                 <div class="form-group">
-                                    <label>Cliente:</label>
+                                    <label>Doctor:</label>
+                                    {{ form.doctor }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Paciente:</label>
                                     {{ form.cli }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Diagnostico:</label>
+                                    {{ form.diagnostic }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Indicaciones:</label>
+                                    {{ form.treatment }}
                                 </div>
                                 <div class="form-group">
                                     <label>Subtotal:</label>

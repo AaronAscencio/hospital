@@ -195,6 +195,9 @@ $(function () {
 
         vents.items.date_joined = $('input[name="date_joined"]').val();
         vents.items.cli = $('select[name="cli"]').val();
+        vents.items.doctor = $('select[name="doctor"]').val();
+        vents.items.diagnostic = $('#id_diagnostic').val();
+        vents.items.treatment = $('#id_treatment').val();
         var parameters = new FormData();
         parameters.append('action', $('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
