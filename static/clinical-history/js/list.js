@@ -4,10 +4,14 @@ $(document).ready(function() {
         language:'es'
     });
 
+    load_all_registers();
     
     $('#id_patient').on('change', function() {
         id = $(this).val();
-        if(id == '') return false;
+        if(id == '') {
+            load_all_registers();
+            return false;
+        }
         $('#tblAppointments').DataTable({
             responsive: true,
             autoWidth: false,
@@ -28,8 +32,8 @@ $(document).ready(function() {
                 {"data": "doctor"},
                 {"data": "patient"},
                 {"data": "diagnostic"},
-                {"data": "sale.treatment"},
-                {"data": "sale.total"},
+                {"data": "treatment"},
+                {"data": "total"},
             ],
             columnDefs: [
                                 
@@ -39,4 +43,37 @@ $(document).ready(function() {
             }
         });
     });
+
+    function load_all_registers(){
+        $('#tblAppointments').DataTable({
+            responsive: true,
+            autoWidth: false,
+            destroy: true,
+            deferRender: true,
+            ajax: {
+                url: window.location.pathname,
+                type: 'POST',
+                data: {
+                    'action': 'all',
+                     'id':-1
+                },
+                dataSrc: ""
+            },
+            columns: [
+                {"data": "id"},
+                {"data": "date"},
+                {"data": "doctor"},
+                {"data": "patient"},
+                {"data": "diagnostic"},
+                {"data": "treatment"},
+                {"data": "total"},
+            ],
+            columnDefs: [
+                                
+            ],
+            initComplete: function (settings, json) {
+    
+            }
+        });
+    }
 });

@@ -51,7 +51,7 @@ class AppointmentCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,C
     permission_required = 'appointment.add_appointment'
     success_url = reverse_lazy('appointment:appointment_list')
     #permission_required = 'user.add_user'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -84,7 +84,7 @@ class AppointmentUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,U
     template_name = 'appointment/create.html'
     success_url = reverse_lazy('appointment:appointment_list')
     permission_required = 'appointment.change_appointment'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -118,7 +118,7 @@ class AppointmentDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,D
     template_name = 'appointment/delete.html'
     success_url = reverse_lazy('appointment:appointment_list')
     permission_required = 'appointment.delete_appointment'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()

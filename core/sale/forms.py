@@ -8,6 +8,7 @@ class SaleForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['cli'].choices = self.get_custom_cli_choices()
+        self.fields['doctor'].choices = self.get_custom_doctor_choices()
 
     def get_custom_cli_choices(self):
         # Lógica para generar las opciones personalizadas
@@ -15,6 +16,15 @@ class SaleForm(ModelForm):
         choices.append(('','---------'))
         for obj in Patient.objects.all():
             label = f'{obj.curp} - {obj.get_full_name()}'
+            choices.append((obj.id, label))
+        return choices
+    
+    def get_custom_doctor_choices(self):
+        # Lógica para generar las opciones personalizadas
+        choices = []
+        choices.append(('','---------'))
+        for obj in Doctor.objects.all():
+            label = f'{obj.professional_license} - {obj.get_full_name()}'
             choices.append((obj.id, label))
         return choices
         
@@ -65,4 +75,17 @@ class SaleForm(ModelForm):
         exclude = ['user_updated', 'user_creation']
     
 class SaleByDoctorForm(Form):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['doctor'].choices = self.get_custom_doctor_choices()
+
+    def get_custom_doctor_choices(self):
+        # Lógica para generar las opciones personalizadas
+        choices = []
+        choices.append(('','---------'))
+        for obj in Doctor.objects.all():
+            label = f'{obj.professional_license} - {obj.get_full_name()}'
+            choices.append((obj.id, label))
+        return choices
     doctor = ModelChoiceField(queryset=Doctor.objects.all(),widget=Select(attrs={'class': 'form-control'}))

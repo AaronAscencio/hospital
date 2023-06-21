@@ -8,15 +8,17 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from core.product.forms import ProductForm
 from core.product.models import *
+from django.contrib.auth.mixins import LoginRequiredMixin
+from core.user.mixins import ValidatePermissionRequiredMixin
 
-
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
     model = Product
     template_name = 'product/list.html'
+    permission_required = 'product.view_product'
 
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
@@ -46,11 +48,12 @@ class ProductListView(ListView):
         return JsonResponse(data, safe=False)
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'product/create.html'
     success_url = reverse_lazy('product:product_list')
+    permission_required = 'product.add_product'
 
     def get_context_data(self,**kwargs):
         context =  super().get_context_data(**kwargs)
@@ -62,7 +65,7 @@ class ProductCreateView(CreateView):
         return context
 
 
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
@@ -82,10 +85,11 @@ class ProductCreateView(CreateView):
         return JsonResponse(data)
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView):
     model = Product
     template_name = 'product/delete.html'
     success_url = reverse_lazy('product:product_list')
+    permission_required = 'product.delete_product'
 
 
     @method_decorator(login_required)
@@ -109,11 +113,12 @@ class ProductDeleteView(DeleteView):
         return context
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'product/create.html'
     success_url = reverse_lazy('product:product_list')
+    permission_required = 'product.change_product'
 
 
     @method_decorator(login_required)

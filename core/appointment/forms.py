@@ -11,6 +11,36 @@ class AppointmentForm(ModelForm):
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['patient'].choices = self.get_custom_cli_choices()
+        self.fields['doctor'].choices = self.get_custom_doctor_choices()
+        self.fields['nurse'].choices = self.get_custom_nurse_choices()
+    
+    def get_custom_cli_choices(self):
+        # Lógica para generar las opciones personalizadas
+        choices = []
+        choices.append(('','---------'))
+        for obj in Patient.objects.all():
+            label = f'{obj.curp} - {obj.get_full_name()}'
+            choices.append((obj.id, label))
+        return choices
+    
+    def get_custom_doctor_choices(self):
+        # Lógica para generar las opciones personalizadas
+        choices = []
+        choices.append(('','---------'))
+        for obj in Doctor.objects.all():
+            label = f'{obj.professional_license} - {obj.get_full_name()}'
+            choices.append((obj.id, label))
+        return choices
+    
+    def get_custom_nurse_choices(self):
+        # Lógica para generar las opciones personalizadas
+        choices = []
+        choices.append(('','---------'))
+        for obj in Nurse.objects.all():
+            label = f'{obj.professional_license} - {obj.get_full_name()}'
+            choices.append((obj.id, label))
+        return choices
                 
     class Meta:
         model = Appointment
@@ -30,6 +60,19 @@ class AppointmentForm(ModelForm):
         return data
 
 class AppointmentByDoctorForm(Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['doctor'].choices = self.get_custom_doctor_choices()
+
+    def get_custom_doctor_choices(self):
+        # Lógica para generar las opciones personalizadas
+        choices = []
+        choices.append(('','---------'))
+        for obj in Doctor.objects.all():
+            label = f'{obj.professional_license} - {obj.get_full_name()}'
+            choices.append((obj.id, label))
+        return choices
+    
     doctor = ModelChoiceField(queryset=Doctor.objects.all(),widget=Select(attrs={'class': 'form-control'}))
 
 class AppointmentByPatientForm(Form):

@@ -14,6 +14,7 @@ class ClinicalHistory(models.Model):
     name_patient = models.CharField(max_length=50, blank=True, editable=False)
     sale = models.ForeignKey(Sale, on_delete=models.SET_NULL, null=True)
     diagnostic = models.CharField(max_length=50, blank=False, null=False)
+    treatment = models.CharField(max_length=350, blank=False, null=False)
 
 
     class Meta:
@@ -26,9 +27,10 @@ class ClinicalHistory(models.Model):
     def toJSON(self):
         item = model_to_dict(self)
         item['date'] = self.date.strftime('%Y-%m-%d')
-        item['doctor'] = self.doctor.get_full_name()
-        item['patient'] = self.patient.get_full_name()
-        item['sale'] = self.sale.toJSON()
+        item['doctor'] = self.name_doctor
+        item['patient'] = self.name_patient
+        item['total'] = self.sale.total if self.sale else 'RECETA ELIMINADA'
+        item['diagnostic'] = self.diagnostic
         return item
     
     def save(self, *args, **kwargs):
@@ -39,6 +41,7 @@ class ClinicalHistory(models.Model):
                 self.name_patient = self.patient.get_full_name()
             if self.sale:
                 self.diagnostic = self.sale.diagnostic
+                self.treatment = self.sale.treatment
 
         super().save(*args, **kwargs)
 

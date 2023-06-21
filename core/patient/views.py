@@ -64,7 +64,7 @@ class PatientCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Creat
     permission_required = 'patient.add_patient'
     success_url = reverse_lazy('patient:patient_list')
     #permission_required = 'user.add_user'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -97,7 +97,7 @@ class PatientUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Updat
     template_name = 'patient/create.html'
     success_url = reverse_lazy('patient:patient_list')
     permission_required = 'patient.change_patient'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -131,7 +131,7 @@ class PatientDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Delet
     template_name = 'patient/delete.html'
     success_url = reverse_lazy('patient:patient_list')
     permission_required = 'patient.delete_patient'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()

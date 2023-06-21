@@ -43,7 +43,8 @@
 <p>
     <b>RECETA:</b> {{ sale.id }}<br>
     <b>DOCTOR:</b> {{ sale.doctor.get_full_name|upper }}<br>
-    <b>FECHA DE VENTA:</b> {{ sale.date_joined }}<br>
+    <b>CEDULA PROFESIONAL:</b> {{ sale.doctor.professional_license|upper }}<br>
+    <b>FECHA DE CONSULTA:</b> {{ sale.date_joined }}<br>
     <b>PACIENTE:</b> {{ sale.cli.get_full_name|upper }}<br>
     <b>DIAGNOSTICO:</b> {{ sale.diagnostic|upper }}<br>
     <b>CURP:</b> {{ sale.cli.curp }}<br>

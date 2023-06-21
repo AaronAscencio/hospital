@@ -52,7 +52,7 @@ class DoctorCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Create
     permission_required = 'doctor.add_doctor'
     success_url = reverse_lazy('doctor:doctor_list')
     #permission_required = 'user.add_user'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -85,7 +85,7 @@ class DoctorUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Update
     template_name = 'doctor/create.html'
     success_url = reverse_lazy('doctor:doctor_list')
     permission_required = 'doctor.change_doctor'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -119,7 +119,7 @@ class DoctorDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Delete
     template_name = 'doctor/delete.html'
     success_url = reverse_lazy('doctor:doctor_list')
     permission_required = 'doctor.delete_doctor'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()

@@ -16,6 +16,7 @@ $(function () {
         columns: [
             {"data": "id"},
             {"data": "name"},
+            {"data": "curp"},
             {"data": "total"},
             {"data": "points"},
         ],

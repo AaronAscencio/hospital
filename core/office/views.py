@@ -58,7 +58,7 @@ class OfficeCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Create
     permission_required = 'office.add_office'
     success_url = reverse_lazy('office:office_list')
     #permission_required = 'user.add_user'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -91,7 +91,7 @@ class OfficeUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Update
     template_name = 'office/create.html'
     success_url = reverse_lazy('office:office_list')
     permission_required = 'office.change_office'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -125,7 +125,7 @@ class OfficeDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,Delete
     template_name = 'office/delete.html'
     success_url = reverse_lazy('office:office_list')
     permission_required = 'office.delete_office'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()

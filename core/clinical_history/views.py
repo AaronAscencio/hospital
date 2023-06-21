@@ -15,7 +15,7 @@ from .forms import ClinicalHistoryByPatientForm
 class ClinicalHistoryListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
     model = ClinicalHistory
     template_name = 'clinical-history/list.html'
-    permission_required = 'clinical_history.view_clinical_history'
+    permission_required = 'clinical_history.view_clinicalhistory'
     
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -31,6 +31,12 @@ class ClinicalHistoryListView(LoginRequiredMixin,ValidatePermissionRequiredMixin
                 for history in ClinicalHistory.objects.filter(patient__pk = id):
                     print(history.toJSON())
                     data.append(history.toJSON())
+            elif action == 'all':
+                data = []
+                for history in ClinicalHistory.objects.all():
+                    print(history.toJSON())
+                    data.append(history.toJSON())
+
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:

@@ -29,68 +29,86 @@
                         
                     </a>
                 </li>
+                    {% if perms.user.view_user %}
+                        <li class="nav-item">
+                            <a href="{% url 'user:user_list' %}" class="nav-link"> 
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <p>
+                                    USUARIOS
+                                </p>
+                            </a>
+                        </li>
+                    {% endif %} 
+                    
+                    {% if perms.office.view_office %}
+                        <li class="nav-item">
+                            <a href="{% url 'office:office_list' %}" class="nav-link">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <p>
+                                    CONSULTORIOS
+                                </p>
+                            </a>
+                        </li>
+                    {% endif %} 
+
+                    {% if perms.doctor.view_doctor %}
+                        <li class="nav-item">
+                            <a href="{% url 'doctor:doctor_list' %}" class="nav-link">
+                                <i class="fa fa-user-md" aria-hidden="true"></i>
+                                <p>
+                                    DOCTORES
+                                </p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if perms.appointment.view_appointment %}
+                        <li class="nav-item">
+                            <a href="{% url 'appointment:appointment_by_doctor_list' %}" class="nav-link">
+                                <i class="fa fa-user-md" aria-hidden="true"></i>
+                                <p>
+                                    CITAS POR DOCTOR
+                                </p>
+                            </a>
+                        </li>
+                    {% endif %}
+                
+
+                {% if perms.nurse.view_nurse %}
                     <li class="nav-item">
-                        <a href="{% url 'user:user_list' %}" class="nav-link"> 
-                            <i class="fa fa-users" aria-hidden="true"></i>
+                        <a href="{% url 'nurse:nurse_list' %}" class="nav-link"> 
+                            <i class="fa fa-medkit" aria-hidden="true"></i>
                             <p>
-                                USUARIOS
+                                ENFERMEROS
                             </p>
                         </a>
                     </li> 
+                {% endif %}
 
-                    <li class="nav-item">
-                        <a href="{% url 'office:office_list' %}" class="nav-link">
-                            <i class="fa fa-home" aria-hidden="true"></i>
-                            <p>
-                                CONSULTORIOS
-                            </p>
-                        </a>
-                    </li>
 
+                {% if perms.patient.view_patient %}
                     <li class="nav-item">
-                        <a href="{% url 'doctor:doctor_list' %}" class="nav-link">
-                            <i class="fa fa-user-md" aria-hidden="true"></i>
+                        <a href="{% url 'patient:patient_list' %}" class="nav-link"> 
+                            <i class="fa fa-users" aria-hidden="true"></i>
                             <p>
-                                DOCTORES
+                                PACIENTES
                             </p>
                         </a>
                     </li>
+                {% endif %}
+
+                {% if perms.clinical_history.view_clinicalhistory %}
                     <li class="nav-item">
-                        <a href="{% url 'appointment:appointment_by_doctor_list' %}" class="nav-link">
-                            <i class="fa fa-user-md" aria-hidden="true"></i>
+                        <a href="{% url 'clinical_history:clinical_history_list' %}" class="nav-link"> 
+                            <i class="fa fa-th" aria-hidden="true"></i>
                             <p>
-                                CITAS POR DOCTOR
+                                HISTORIAL CLINICO
                             </p>
                         </a>
-                    </li>
+                    </li> 
+                {% endif %}
                 
-
-                
-                <li class="nav-item">
-                    <a href="{% url 'nurse:nurse_list' %}" class="nav-link"> 
-                        <i class="fa fa-medkit" aria-hidden="true"></i>
-                        <p>
-                            ENFERMEROS
-                        </p>
-                    </a>
-                </li> 
-                <li class="nav-item">
-                    <a href="{% url 'patient:patient_list' %}" class="nav-link"> 
-                        <i class="fa fa-users" aria-hidden="true"></i>
-                        <p>
-                            PACIENTES
-                        </p>
-                    </a>
-                </li> 
-                <li class="nav-item">
-                    <a href="{% url 'clinical_history:clinical_history_list' %}" class="nav-link"> 
-                        <i class="fa fa-th" aria-hidden="true"></i>
-                        <p>
-                            HISTORIAL CLINICO
-                        </p>
-                    </a>
-                </li> 
-
+                {% if perms.appointment.view_appointment %}
                 <li class="nav-item">
                     <a href="{% url 'appointment:appointment_list' %}" class="nav-link"> 
                         <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -98,47 +116,65 @@
                             CITAS
                         </p>
                     </a>
-                </li> 
-                <li class="nav-item">
-                    <a href="{% url 'appointment:appointment_by_patient_list' %}" class="nav-link"> 
-                        <i class="fa fa-history" aria-hidden="true"></i>
-                        <p>
-                            HISTORIAL DE CITAS POR PACIENTE
-                        </p>
-                    </a>
-                </li> 
-                <li class="nav-item">
-                    <a href="{% url 'sale:sale_list' %}" class="nav-link"> 
-                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                        <p>
-                            RECETAS
-                        </p>
-                    </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'sale:sales_by_doctor' %}" class="nav-link"> 
-                        <i class="fa fa-book" aria-hidden="true"></i>
-                        <p>
-                            RECETAS POR MEDICO
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'product:category_list' %}" class="nav-link"> 
-                        <i class="fa fa-cubes" aria-hidden="true"></i>
-                        <p>
-                            CATEGORIAS
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'product:product_list' %}" class="nav-link"> 
-                        <i class="fa fa-archive" aria-hidden="true"></i>
-                        <p>
-                            PRODUCTOS
-                        </p>
-                    </a>
-                </li> 
+                {% endif %}
+
+                {% if perms.appointment.view_appointment %}
+                    <li class="nav-item">
+                        <a href="{% url 'appointment:appointment_by_patient_list' %}" class="nav-link"> 
+                            <i class="fa fa-history" aria-hidden="true"></i>
+                            <p>
+                                HISTORIAL DE CITAS POR PACIENTE
+                            </p>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if perms.sale.view_sale %}
+                    <li class="nav-item">
+                        <a href="{% url 'sale:sale_list' %}" class="nav-link"> 
+                            <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                            <p>
+                                RECETAS
+                            </p>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if perms.sale.view_sale %}
+                    <li class="nav-item">
+                        <a href="{% url 'sale:sales_by_doctor' %}" class="nav-link"> 
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                            <p>
+                                RECETAS POR MEDICO
+                            </p>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if perms.product.view_category %}
+                    <li class="nav-item">
+                        <a href="{% url 'product:category_list' %}" class="nav-link"> 
+                            <i class="fa fa-cubes" aria-hidden="true"></i>
+                            <p>
+                                CATEGORIAS
+                            </p>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if perms.product.view_product%}
+                    <li class="nav-item">
+                        <a href="{% url 'product:product_list' %}" class="nav-link"> 
+                            <i class="fa fa-archive" aria-hidden="true"></i>
+                            <p>
+                                PRODUCTOS
+                            </p>
+                        </a>
+                    </li> 
+                {% endif %}
+
+                {% if perms.user.view_user %}    
                 <li class="nav-item">
                     <a href="{% url 'sale:sale_total' %}" class="nav-link"> 
                         <i class="fa fa-male" aria-hidden="true"></i>
@@ -147,7 +183,7 @@
                         </p>
                     </a>
                 </li> 
-            
+                {% endif %}
         
             </ul>
         </nav>

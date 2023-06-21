@@ -12,7 +12,7 @@ from core.product.models import Category
 from core.product.forms import CategoryForm
 
 class CategoryListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListView):
-    permission_required = ('product.change_category','product.delete_category')
+    permission_required = 'product.view_category'
     model = Category
     template_name = 'category/list.html'
 
@@ -43,7 +43,7 @@ class CategoryListView(LoginRequiredMixin,ValidatePermissionRequiredMixin,ListVi
         context['entity'] = 'Categorias'
         return context
 
-class CategoryCreateView(ValidatePermissionRequiredMixin,CreateView):
+class CategoryCreateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,CreateView):
     permission_required = 'product.add_category'
     model = Category
     form_class = CategoryForm
@@ -59,7 +59,7 @@ class CategoryCreateView(ValidatePermissionRequiredMixin,CreateView):
         return context
 
 
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
@@ -81,13 +81,14 @@ class CategoryCreateView(ValidatePermissionRequiredMixin,CreateView):
             
         return JsonResponse(data)
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = 'category/create.html'
     success_url = reverse_lazy('product:category_list')
+    permission_required = 'product.change_category'
 
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -119,14 +120,14 @@ class CategoryUpdateView(UpdateView):
         context['action'] = 'edit'
         return context
 
-class CategoryDeleteView(DeleteView): 
-
+class CategoryDeleteView(LoginRequiredMixin,ValidatePermissionRequiredMixin,DeleteView): 
+    permission_required = 'product.delete_category'
     model = Category
     template_name = 'category/delete.html'
     success_url = reverse_lazy('product:category_list')
 
 
-    @method_decorator(login_required)
+    #@method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
 

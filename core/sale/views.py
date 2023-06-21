@@ -157,7 +157,7 @@ class SaleDeleteView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Delete
     template_name = 'sale/delete.html'
     success_url = reverse_lazy('sale:sale_list')
     permission_required = 'sale.delete_sale'
-    url_redirect = success_url
+    #url_redirect = success_url
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -183,7 +183,7 @@ class SaleUpdateView(LoginRequiredMixin,ValidatePermissionRequiredMixin,UpdateVi
     model = Sale
     form_class = SaleForm
     template_name = 'sale/create.html'
-    success_url = reverse_lazy('sale:sale_list')
+    #success_url = reverse_lazy('sale:sale_list')
 
 
     def get_details_products(self):
@@ -339,6 +339,7 @@ class TotalSaleListView(LoginRequiredMixin, ValidatePermissionRequiredMixin, Lis
                     data.append({
                         'id': sale['cli'],
                         'name':Patient.objects.get(id = sale['cli']).get_full_name(),
+                        'curp': Patient.objects.get(id = sale['cli']).curp,
                         'total': f'${float(self.get_total_sales_by_client(sale["cli"]))}',
                         'points': self.get_calculate_points(self.get_total_sales_by_client(sale["cli"]))
                     })
